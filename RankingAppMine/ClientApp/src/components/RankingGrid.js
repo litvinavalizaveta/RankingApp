@@ -1,14 +1,16 @@
-﻿const RankingGrid = ({ items, imgArr, drag, allowDrop, drop }) => {
+﻿
+const RankingGrid = ({ items, imgArr, drag, allowDrop, drop }) => {
+
     const rankingGrid = [];
     const cellCollectionTop = [];
     const cellCollectionMiddle = [];
     const cellCollectionBottom = [];
     const cellCollectionWorst = [];
 
-    function pushCellMarkupToArr(cellCollection, rankNum, rowLabel) { // put div with or without image to each cell of the row
+    function pushCellMarkupToArr(cellCollection, rankNum, rowLabel) {
         if (rankNum > 0) {
             var item = items.find(o => o.ranking === rankNum);
-            cellCollection.push(<div id={`rank-${rankNum}`} onDrop={drop} onDragOver={allowDrop} className="rank-cell" draggable="true">
+            cellCollection.push(<div id={`rank-${rankNum}`} onDrop={drop} onDragOver={allowDrop} className="rank-cell">
                 {(item != null) ? <img id={`item-${item.id}`} src={imgArr.find(o => o.id === item.imageId)?.image} draggable="true" onDragStart={drag} />
                     : null}
             </div>);
@@ -45,18 +47,21 @@
                 currCollection = cellCollectionWorst;
                 label = "Worst Tier";
             }
-            pushCellMarkupToArr(currCollection, rankNum, label); // fill cells with divs
+            pushCellMarkupToArr(currCollection, rankNum, label);
+
         }
+
     }
 
-    function createCellsForRows() { // create each cell for a particular row
+    function createCellsForRows() {
         const maxRows = 4;
         for (var row = 1; row <= maxRows; row++) {
             createCellsForRow(row);
         }
     }
 
-    function createRowsForGrid() { // create each row
+    function createRowsForGrid() {
+
         rankingGrid.push(<div className="rank-row top-tier">{cellCollectionTop}</div>);
         rankingGrid.push(<div className="rank-row middle-tier">{cellCollectionMiddle}</div>);
         rankingGrid.push(<div className="rank-row bottom-tier">{cellCollectionBottom}</div>);
@@ -66,14 +71,16 @@
     }
 
     function createRankingGrid() {
-        createCellsForRows(); // fill cellCollections first
-        return createRowsForGrid(); // create rows containing of them
+        createCellsForRows();
+        return createRowsForGrid();
     }
+
     return (
         <div className="rankings">
             {createRankingGrid()}
         </div>
-    )
-}
 
+    )
+
+}
 export default RankingGrid;
